@@ -1,0 +1,22 @@
+{
+    "마사카도": {
+        "password": "850320",
+        "level": 1,
+        "hp": 100,
+        "mp": 50,
+        "str_": 5,
+        "dex": 5,
+        "int_": 5,
+        "x": 4,
+        "y": 1,
+        "z": 0,
+        "inventory": [],
+        "equipped": {
+            "무기": null,
+            "방어구": null
+        },
+        "kingdom": "중립",
+        "exp": 0,
+        "stat_points": 0
+    }
+}

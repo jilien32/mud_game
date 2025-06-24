@@ -1,3 +1,5 @@
+from server.player import Player
+
 class UserManager:
     def __init__(self, repository):
         self.repository = repository
@@ -6,9 +8,24 @@ class UserManager:
     def register(self, user_id, password):
         if user_id in self.users:
             return False, "이미 존재하는 아이디입니다."
-        self.users[user_id] = {'password': password}
+        self.users[user_id] = {
+            'password': password,
+            'level': 1,
+            'hp': 100,
+            'mp': 50,
+            'str_': 5,
+            'dex': 5,
+            'int_': 5,
+            'x': 0, 'y': 0, 'z': 0,
+            'inventory': [],
+            'equipped': {"무기": None, "방어구": None},
+            'kingdom': '중립',
+            'exp': 0,
+            'stat_points': 0
+        }
         self.repository.save_users(self.users)
         return True, "회원가입 완료."
+
 
     def login(self, user_id, password):
         if user_id not in self.users:
@@ -16,6 +33,7 @@ class UserManager:
         if self.users[user_id]['password'] != password:
             return False, "비밀번호가 틀렸습니다."
         return True, "로그인 성공."
+
 
     def save(self):
         self.repository.save_users(self.users)
@@ -27,18 +45,25 @@ class UserManager:
 
     def load_player_state(self, user_id):
         user_data = self.users.get(user_id, {})
+        x, y, z = user_data.get("x", 0), user_data.get("y", 0), user_data.get("z", 0)
+
         return {
-            "location": user_data.get("location", "start"),
+            "x": x,
+            "y": y,
+            "z": z,
             "inventory": user_data.get("inventory", []),
-            "equipment": user_data.get("equipment", {"무기": None, "방어구": None}),
+            "equipped": user_data.get("equipped", {"무기": None, "방어구": None}),
             "level": user_data.get("level", 1),
-            "stats": user_data.get("stats", {"힘": 10, "민첩": 10, "지능": 10}),
-            "hp": user_data.get("hp", {"current": 100, "max": 100}),
-            "mp": user_data.get("mp", {"current": 50, "max": 50}),
+            "str_": user_data.get("str_", 5),
+            "dex": user_data.get("dex", 5),
+            "int_": user_data.get("int_", 5),
+            "hp": user_data.get("hp", 100),
+            "mp": user_data.get("mp", 50),
             "exp": user_data.get("exp", 0),
-            "exp_to_level": user_data.get("exp_to_level", 100),
-            "stat_points": user_data.get("stat_points", 0)
+            "stat_points": user_data.get("stat_points", 0),
+            "kingdom": user_data.get("kingdom", "중립")
         }
+
 
 
 
